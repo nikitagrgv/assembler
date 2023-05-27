@@ -1,3 +1,4 @@
+%assign CALL_READ 0
 %assign CALL_WRITE 1
 
 %assign STDIN 0
@@ -7,17 +8,45 @@
 global _start
 
 section .rodata
-hello_world: db "hello world 123 456", 0xA, 0x0
+hello_world: db "you  printed: ", 0xA, 0x0
 len: equ $ - hello_world
 
 section .text
 _start:
     mov rbp, rsp
 
+    ; sub rsp, 8 ; allocate 8 bytes on the stack
+    push "1"
+    push "2"
+    push "3"
+    push "4"
+    push "5"
+    push "6"
+    push "7"
+    push "8"
+
+
+    push 8
+    mov rax, rsp
+    add rax, 16
+    push rax
+    call read
+    add rsp, 16 ; clear arguments
+
     push len
     push hello_world
     call print
     add rsp, 16 ; clear arguments
+
+    push 19
+    mov rax, rsp
+    add rax, 24
+    push rax,
+    call print
+    add rsp, 16 ; clear arguments
+
+
+    add rsp, 8 ; deallocate 8 bytes from the stack
     
     jmp exit
 
@@ -28,6 +57,20 @@ print:
 
     mov rax, CALL_WRITE
     mov rdi, STDOUT
+    mov rsi, [rbp + 16]
+    mov rdx, [rbp + 24]
+    syscall
+
+    pop rbp
+    ret
+
+; string, length
+read:
+    push rbp
+    mov rbp, rsp
+
+    mov rax, CALL_READ
+    mov rdi, STDIN
     mov rsi, [rbp + 16]
     mov rdx, [rbp + 24]
     syscall
