@@ -7,13 +7,14 @@
 global _start
 
 section .rodata
-    hello_world: db "hfhl1w wrld!", 0xA, 0x0
+hello_world: db "hello world 123 456", 0xA, 0x0
+len: equ $ - hello_world
 
 section .text
 _start:
     mov rbp, rsp
 
-    push 6
+    push len
     push hello_world
     call print
     add rsp, 16 ; clear arguments
