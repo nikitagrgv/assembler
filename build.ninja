@@ -1,0 +1,11 @@
+rule compile
+    command = nasm -f elf64 -o $out $in
+    description = compiling $out...
+
+rule link
+    command = ld -m elf_x86_64 -o $out $in
+    description = linking $out...
+
+build main.o: compile main.asm
+
+build main: link main.o 
