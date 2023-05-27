@@ -11,14 +11,30 @@ section .rodata
 
 section .text
 _start:
+    mov rbp, rsp
 
-    mov eax, CALL_WRITE
-    mov edi, STDOUT
-    mov esi, hello_world
-    mov edx, 13
+    push 6
+    push hello_world
+    call print
+    add rsp, 16 ; clear arguments
+    
+    jmp exit
+
+; string, length
+print:
+    push rbp
+    mov rbp, rsp
+
+    mov rax, CALL_WRITE
+    mov rdi, STDOUT
+    mov rdx, [rbp + 24]
+    mov rsi, [rbp + 16]
     syscall
 
+    pop rbp
+    ret
 
+exit:
     mov eax, 0x01
     mov ebx, 123
     int 0x80
