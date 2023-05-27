@@ -28,8 +28,8 @@ print:
 
     mov rax, CALL_WRITE
     mov rdi, STDOUT
-    mov rdx, [rbp + 24]
     mov rsi, [rbp + 16]
+    mov rdx, [rbp + 24]
     syscall
 
     pop rbp
