@@ -1,9 +1,9 @@
 rule compile
-    command = nasm -f elf64 -o $out $in
+    command = nasm -f elf64 -g -F dwarf -o $out $in
     description = compiling $out...
 
 rule link
-    command = ld -m elf_x86_64 -o $out $in
+    command = ld -o $out $in
     description = linking $out...
 
 build main.o: compile main.asm

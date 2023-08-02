@@ -1,5 +1,4 @@
-%assign CALL_READ 0
-%assign CALL_WRITE 1
+%include "syscalls.asm"
 
 %assign STDIN 0
 %assign STDOUT 1
@@ -13,72 +12,88 @@ len: equ $ - hello_world
 
 section .text
 _start:
-    mov rbp, rsp
-
-    ; sub rsp, 8 ; allocate 8 bytes on the stack
-    push "1"
-    push "2"
-    push "3"
-    push "4"
-    push "5"
-    push "6"
-    push "7"
-    push "8"
 
 
-    push 8
-    mov rax, rsp
-    add rax, 16
-    push rax
-    call read
-    add rsp, 16 ; clear arguments
+    mov rax, 123
+    add rax, 3
+    add rax, 6
 
-    push len
-    push hello_world
-    call print
-    add rsp, 16 ; clear arguments
+    mov rdi, rax
 
-    push 19
-    mov rax, rsp
-    add rax, 24
-    push rax,
-    call print
-    add rsp, 16 ; clear arguments
+    mov rdi, 123
+    mov rax, SYSCALL_EXIT
+    syscall 
 
 
-    add rsp, 8 ; deallocate 8 bytes from the stack
+
     
-    jmp exit
 
-; string, length
-print:
-    push rbp
-    mov rbp, rsp
+;     mov rbp, rsp
 
-    mov rax, CALL_WRITE
-    mov rdi, STDOUT
-    mov rsi, [rbp + 16]
-    mov rdx, [rbp + 24]
-    syscall
+;     ; sub rsp, 8 ; allocate 8 bytes on the stack
+;     push "1"
+;     push "2"
+;     push "3"
+;     push "4"
+;     push "5"
+;     push "6"
+;     push "7"
+;     push "8"
 
-    pop rbp
-    ret
 
-; string, length
-read:
-    push rbp
-    mov rbp, rsp
+;     push 8
+;     mov rax, rsp
+;     add rax, 16
+;     push rax
+;     call read
+;     add rsp, 16 ; clear arguments
 
-    mov rax, CALL_READ
-    mov rdi, STDIN
-    mov rsi, [rbp + 16]
-    mov rdx, [rbp + 24]
-    syscall
+;     push len
+;     push hello_world
+;     call print
+;     add rsp, 16 ; clear arguments
 
-    pop rbp
-    ret
+;     push 19
+;     mov rax, rsp
+;     add rax, 24
+;     push rax,
+;     call print
+;     add rsp, 16 ; clear arguments
 
-exit:
-    mov eax, 0x01
-    mov ebx, 123
-    int 0x80
+
+;     add rsp, 8 ; deallocate 8 bytes from the stack
+    
+;     jmp exit
+
+; ; string, length
+; print:
+;     push rbp
+;     mov rbp, rsp
+
+;     mov rax, CALL_WRITE
+;     mov rdi, STDOUT
+;     mov rsi, [rbp + 16]
+;     mov rdx, [rbp + 24]
+;     syscall
+
+;     pop rbp
+;     ret
+
+; ; string, length
+; read:
+;     push rbp
+;     mov rbp, rsp
+
+;     mov rax, CALL_READ
+;     mov rdi, STDIN
+;     mov rsi, [rbp + 16]
+;     mov rdx, [rbp + 24]
+;     syscall
+
+;     pop rbp
+;     ret
+
+; exit:
+;     mov eax, 0x01
+;     mov ebx, 123
+;     int 0x80
