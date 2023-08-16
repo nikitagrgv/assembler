@@ -13,6 +13,6 @@ _start:
     mov rdx, 11 ; message length
     syscall
 
-    mov rdi, 123 ; exit code
     mov rax, 60 ; syscall `exit`
+    mov rdi, 123 ; exit code
     syscall 
